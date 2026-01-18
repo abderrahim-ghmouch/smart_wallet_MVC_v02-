@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests de Personnalité & Collaboration</title>
+    <!-- Importation de polices très lisibles : Inter (Titres) et Lato (Texte) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. THE SETUP - SCROLLING PAGE */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000; /* Pure Black Background */
+            color: #e2e8f0; /* Light text */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px; /* Space between slides */
+            margin: 0;
+            min-height: 100vh;
+            padding: 40px 0;
+            font-family: 'Lato', sans-serif;
+            overflow-y: auto; /* Enable vertical scroll */
+        }
+
+        /* Slide Card Style */
+        .slide {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0a0a0a; /* Very Dark Grey */
+            border: 1px solid #333;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        /* 2. TYPOGRAPHY */
+        h1, h2.slide-title {
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 80px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            /* Grayscale Gradient */
+            background: linear-gradient(to right, #ffffff, #666666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2.slide-title {
+            font-size: 52px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-align: left;
+            width: 100%;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+
+        h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ffffff;
+            border-left: 4px solid #fff; /* White Accent instead of blue */
+            padding-left: 15px;
+        }
+
+        p, li, td {
+            color: #cbd5e1;
+            font-size: 22px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .subtitle {
+            font-family: 'Lato', sans-serif;
+            font-size: 32px;
+            color: #94a3b8;
+            font-style: italic;
+            font-weight: 300;
+            margin-top: 10px;
+        }
+
+        /* 3. LAYOUT UTILITIES */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .two-column.tiled > div {
+            background-color: #111111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 40px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* TILED CONTENT (DISC) - MONOCHROME */
+        .tiled-content {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        .tile {
+            flex: 1;
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 25px 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .tile:hover {
+            transform: translateY(-5px);
+            background-color: #222;
+            border-color: #fff;
+        }
+
+        .tile .icon {
+            font-size: 32px;
+            margin-bottom: 20px;
+            height: 70px;
+            width: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: #000;
+            border: 1px solid #333;
+            color: #fff; /* White icon */
+        }
+
+        /* Monochrome Overrides for DISC Tiles */
+        .tile.disc-red .icon { box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); border-color: #999; }
+        .tile.disc-red h3 { color: #fff; border: none; padding: 0;}
+        
+        .tile.disc-yellow .icon { box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); border-color: #666; }
+        .tile.disc-yellow h3 { color: #ccc; border: none; padding: 0;}
+        
+        .tile.disc-green .icon { box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); border-color: #444; }
+        .tile.disc-green h3 { color: #999; border: none; padding: 0;}
+        
+        .tile.disc-blue .icon { box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); border-color: #ccc; }
+        .tile.disc-blue h3 { color: #eee; border: none; padding: 0;}
+
+
+        /* Visuals */
+        .visual-placeholder {
+            width: 100%;
+            height: 400px;
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* MBTI Grid */
+        .mbti-grid-visual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 4px;
+            width: 320px;
+            height: 320px;
+            background: #333;
+            padding: 4px;
+            border-radius: 8px;
+        }
+        .mbti-cell {
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-weight: bold;
+            font-size: 20px;
+            color: #fff;
+        }
+        .mbti-cell span { font-size: 14px; color: #888; font-weight: normal; margin-top: 5px; }
+
+        /* Enneagram */
+        .enneagram-circle {
+            width: 280px;
+            height: 280px;
+            border: 4px solid #333;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .enneagram-point {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #222;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Table */
+        table { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid #333; border-radius: 8px; overflow: hidden; }
+        th { background-color: #171717; color: #fff; padding: 20px; text-align: left; font-family: 'Inter'; font-size: 20px; border-bottom: 1px solid #333; }
+        td { padding: 18px; border-bottom: 1px solid #222; background-color: #0a0a0a; color: #cbd5e1; font-size: 20px; }
+        tr:hover td { background-color: #111; }
+
+        /* Warning Box */
+        .warning-box { border: 1px solid #fff; background: rgba(255, 255, 255, 0.05); padding: 30px; margin-top: 20px; border-radius: 8px; border-left: 5px solid #fff; }
+
+        /* Scenario Cards */
+        .scenario-container { display: flex; gap: 20px; margin-top: 30px; }
+        .scenario-card { background: #111; padding: 25px; flex: 1; border: 1px solid #333; border-radius: 8px; border-top: 3px solid #fff; }
+
+        .slide-number {
+            position: absolute;
+            bottom: 25px;
+            right: 40px;
+            font-family: 'Inter';
+            font-size: 18px;
+            color: #555;
+            font-weight: 600;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Titre -->
+    <div class="slide" id="slide-1">
+        <div class="content-area" style="text-align: center; align-items: center;">
+            <!-- Sticker Visual: Personne au centre des nuances de gris -->
+            <div style="position: relative; margin-bottom: 40px; display: inline-block;">
+                <div style="
+                    width: 180px; 
+                    height: 180px; 
+                    background: #fff; 
+                    border-radius: 50%; 
+                    display: flex; 
+                    align-items: center; 
+                    justify-content: center;
+                    box-shadow: 0 0 25px rgba(255, 255, 255, 0.15), 0 10px 30px rgba(0,0,0,0.6);
+                    border: 5px solid #fff; 
+                ">
+                    <!-- Cercle Dégradé 4 Nuances de Gris -->
+                    <div style="
+                        width: 160px; 
+                        height: 160px; 
+                        border-radius: 50%; 
+                        background: conic-gradient(
+                            #d1d5db 0deg 90deg,   /* Gris Clair */
+                            #9ca3af 90deg 180deg, /* Gris Moyen */
+                            #6b7280 180deg 270deg, /* Gris Foncé */
+                            #374151 270deg 360deg  /* Gris Très Foncé */
+                        );
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        position: relative;
+                    ">
+                        <!-- Silhouette Personne en Gris -->
+                        <i class="fa-solid fa-user" style="
+                            font-size: 85px; 
+                            color: #f3f4f6; 
+                            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+                        "></i>
+                    </div>
+                </div>
+            </div>
+
+            <h1>Tests de Personnalité<br>& Collaboration</h1>
+            <p class="subtitle">"Comprendre l'autre pour triompher ensemble"</p>
+            
+            <!-- Ajout des noms des présentateurs -->
+            <div style="margin-top: 50px; border-top: 1px solid #333; padding-top: 20px;">
+                <p style="font-size: 24px; color: #e2e8f0; margin: 0;">Présenté par</p>
+                <p style="font-size: 28px; font-weight: 700; color: #fff; margin-top: 5px;">Abderrahim & Oumaima</p>
+            </div>
+        </div>
+        <div class="slide-number">01</div>
+    </div>
+
+    <!-- Slide 2: Introduction -->
+    <div class="slide" id="slide-2">
+        <h2 class="slide-title">Introduction</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div style="padding-right: 20px;">
+                    <p>La réussite d'un projet ne dépend pas uniquement des compétences techniques, mais aussi de la dynamique humaine. Les malentendus, les frustrations et les conflits proviennent souvent d'une simple méconnaissance des modes de fonctionnement de chacun.</p>
+                    <p style="margin-top: 20px;">Cette présentation explore comment utiliser les outils psychométriques pour transformer ces différences en atouts stratégiques pour l'entreprise.</p>
+                </div>
+                <div class="visual-placeholder">
+                    <i class="fa-solid fa-people-group" style="font-size: 100px; color: #fff; opacity: 0.8; margin-bottom: 20px;"></i>
+                    <p>Harmoniser les talents</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">02</div>
+    </div>
+
+    <!-- Slide 3: Sommaire -->
+    <div class="slide" id="slide-3">
+        <h2 class="slide-title">Sommaire</h2>
+        <div class="content-area">
+            <ul style="list-style: none; padding: 0; font-size: 28px;">
+                <li style="margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <span style="color: #fff; font-weight: bold; margin-right: 15px;">I.</span> Définition & Utilité
+                </li>
+                <li style="margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <span style="color: #fff; font-weight: bold; margin-right: 15px;">II.</span> Les Grands Modèles (DISC, MBTI, Big Five, Ennéagramme)
+                </li>
+                <li style="margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <span style="color: #fff; font-weight: bold; margin-right: 15px;">III.</span> Comparatif Stratégique
+                </li>
+                <li style="margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <span style="color: #fff; font-weight: bold; margin-right: 15px;">IV.</span> Pièges à Éviter
+                </li>
+                <li style="margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px;">
+                    <span style="color: #fff; font-weight: bold; margin-right: 15px;">V.</span> Mise en Application & Conclusion
+                </li>
+            </ul>
+        </div>
+        <div class="slide-number">03</div>
+    </div>
+
+    <!-- Slide 4: Définition -->
+    <div class="slide" id="slide-4">
+        <h2 class="slide-title">Définition et Utilité</h2>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div>
+                    <h3><i class="fa-solid fa-book-open"></i> C'est quoi ?</h3>
+                    <p>Les tests de personnalité ne sont pas des jugements, mais des cartographies. Ils révèlent la structure psychologique : préférences, sources d'énergie et mécanismes de décision.</p>
+                </div>
+                <div>
+                    <h3><i class="fa-solid fa-crosshairs"></i> Pour quoi faire ?</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-check" style="color:#fff; margin-right: 10px;"></i> <strong>Désamorcer</strong> les conflits inutiles.</li>
+                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-check" style="color:#fff; margin-right: 10px;"></i> <strong>Adapter</strong> la communication.</li>
+                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-check" style="color:#fff; margin-right: 10px;"></i> <strong>Positionner</strong> les talents.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">04</div>
+    </div>
+
+    <!-- Slide 5: DISC -->
+    <div class="slide" id="slide-5">
+        <h2 class="slide-title">Le DISC : Les 4 Styles</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile disc-red">
+                    <div class="icon"><i class="fa-solid fa-fire"></i></div>
+                    <h3>Dominant</h3>
+                    <p>Franc, Directif.<br><em>"Allons droit au but."</em></p>
+                </div>
+                <div class="tile disc-yellow">
+                    <div class="icon"><i class="fa-solid fa-sun"></i></div>
+                    <h3>Influent</h3>
+                    <p>Enthousiaste, Sociable.<br><em>"Faisons ça ensemble !"</em></p>
+                </div>
+                <div class="tile disc-green">
+                    <div class="icon"><i class="fa-solid fa-tree"></i></div>
+                    <h3>Stable</h3>
+                    <p>Calme, Patient.<br><em>"Prenons le temps."</em></p>
+                </div>
+                <div class="tile disc-blue">
+                    <div class="icon"><i class="fa-solid fa-chess-board"></i></div>
+                    <h3>Conforme</h3>
+                    <p>Précis, Analytique.<br><em>"Quels sont les faits ?"</em></p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">05</div>
+    </div>
+
+    <!-- Slide 6: MBTI -->
+    <div class="slide" id="slide-6">
+        <h2 class="slide-title">Le MBTI : 16 Archétypes</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <p>Une analyse cognitive basée sur 4 axes de dualité :</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 20px;">
+                        <li style="margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px;"><strong>E vs I :</strong> Énergie (Monde vs Soi).</li>
+                        <li style="margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px;"><strong>S vs N :</strong> Perception (Détails vs Global).</li>
+                        <li style="margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px;"><strong>T vs F :</strong> Décision (Logique vs Valeurs).</li>
+                        <li style="margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 10px;"><strong>J vs P :</strong> Style (Organisé vs Flexible).</li>
+                    </ul>
+                </div>
+                <div class="visual-placeholder">
+                    <div class="mbti-grid-visual">
+                        <div class="mbti-cell" style="color:#fff">Analystes<span>(INTJ, ENTP)</span></div>
+                        <div class="mbti-cell" style="color:#ddd">Diplomates<span>(INFJ, ENFP)</span></div>
+                        <div class="mbti-cell" style="color:#bbb">Sentinelles<span>(ISTJ, ESFJ)</span></div>
+                        <div class="mbti-cell" style="color:#999">Explorateurs<span>(ISTP, ESFP)</span></div>
+                    </div>
+                    <p style="margin-top: 20px; font-size: 16px; color: #888;">La Matrice des 4 familles</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">06</div>
+    </div>
+
+    <!-- Slide 7: Big Five -->
+    <div class="slide" id="slide-7">
+        <h2 class="slide-title">Le Big Five (OCEAN)</h2>
+        <div class="content-area">
+            <div style="width: 90%;">
+                <p style="font-size: 26px; margin-bottom: 30px; font-weight: 600; border-left: 4px solid #fff; padding-left: 20px;">Le standard scientifique de la psychologie moderne.</p>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 20px;"><i class="fa-solid fa-compass" style="color:#fff; width: 30px;"></i> <strong>Ouverture :</strong> Curiosité intellectuelle et créativité.</li>
+                    <li style="margin-bottom: 20px;"><i class="fa-solid fa-clipboard-check" style="color:#fff; width: 30px;"></i> <strong>Conscienciosité :</strong> Organisation et discipline.</li>
+                    <li style="margin-bottom: 20px;"><i class="fa-solid fa-bullhorn" style="color:#fff; width: 30px;"></i> <strong>Extraversion :</strong> Recherche de stimulation externe.</li>
+                    <li style="margin-bottom: 20px;"><i class="fa-solid fa-hand-holding-heart" style="color:#fff; width: 30px;"></i> <strong>Agréabilité :</strong> Tendance à la compassion.</li>
+                    <li style="margin-bottom: 20px;"><i class="fa-solid fa-cloud-bolt" style="color:#fff; width: 30px;"></i> <strong>Neuroticisme :</strong> Sensibilité au stress.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide-number">07</div>
+    </div>
+
+    <!-- Slide 8: Enneagram -->
+    <div class="slide" id="slide-8">
+        <h2 class="slide-title">L'Ennéagramme</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <h3>La Motivation Profonde</h3>
+                    <p>Ce modèle ne regarde pas <em>comment</em> vous agissez, mais <em>pourquoi</em>. Il identifie la peur fondamentale.</p>
+                    <br>
+                    <div style="background: #111; padding: 20px; border: 1px dashed #444; border-radius: 8px;">
+                        <p><strong>Type 8 :</strong> Peur d'être contrôlé.</p>
+                        <p><strong>Type 1 :</strong> Peur d'être imparfait.</p>
+                        <p><strong>Type 6 :</strong> Peur de manquer de soutien.</p>
+                    </div>
+                </div>
+                <div class="visual-placeholder">
+                    <div class="enneagram-circle">
+                        <div class="enneagram-point" style="top: -20px;">9</div>
+                        <div class="enneagram-point" style="bottom: 20px; left: 20px;">4</div>
+                        <div class="enneagram-point" style="bottom: 20px; right: 20px;">5</div>
+                        <i class="fa-solid fa-circle-nodes" style="font-size: 150px; opacity: 0.2; color: #fff;"></i>
+                    </div>
+                    <p style="margin-top: 20px; font-weight: bold;">9 Types Interconnectés</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">08</div>
+    </div>
+
+    <!-- Slide 9: Comparatif -->
+    <div class="slide" id="slide-9">
+        <h2 class="slide-title">Comparatif Stratégique</h2>
+        <div class="content-area">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test</th>
+                        <th>Cible</th>
+                        <th>Usage Optimal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>DISC</strong></td>
+                        <td>Comportement visible</td>
+                        <td>Vente, Gestion de conflit rapide</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MBTI</strong></td>
+                        <td>Cablage cognitif</td>
+                        <td>Constitution d'équipe</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Big Five</strong></td>
+                        <td>Traits stables</td>
+                        <td>Recrutement prédictif</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ennéagramme</strong></td>
+                        <td>Inconscient & Peurs</td>
+                        <td>Coaching de dirigeants</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="slide-number">09</div>
+    </div>
+
+    <!-- Slide 10: Pièges -->
+    <div class="slide" id="slide-10">
+        <h2 class="slide-title">Attention : Les Pièges</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div style="background: #111; padding: 20px; border: 1px solid #333; border-radius: 8px;">
+                    <h3>L'Effet Barnum</h3>
+                    <p>Ne vous laissez pas berner par des descriptions vagues qui semblent s'appliquer à tout le monde. Utilisez des tests certifiés.</p>
+                </div>
+                <div style="background: #111; padding: 20px; border: 1px solid #333; border-radius: 8px;">
+                    <h3>L'Étiquetage</h3>
+                    <p>Le danger mortel : <em>"Il est Rouge, donc il est colérique."</em> La personnalité est fluide. Un test est une photo à un instant T.</p>
+                </div>
+            </div>
+            <div class="warning-box">
+                <p style="margin: 0; font-weight: bold; color: #fff;"><i class="fa-solid fa-triangle-exclamation"></i> Règle d'or : Utilisez ces outils pour ouvrir le dialogue, jamais pour enfermer ou exclure.</p>
+            </div>
+        </div>
+        <div class="slide-number">10</div>
+    </div>
+
+    <!-- Slide 11: Cas Pratique -->
+    <div class="slide" id="slide-11">
+        <h2 class="slide-title">Cas Pratique : Le Clash</h2>
+        <div class="content-area">
+            <p style="font-size: 24px;">Scénario : <strong>Lancement urgent d'un produit buggé.</strong></p>
+            <div class="scenario-container">
+                <div class="scenario-card">
+                    <h3 style="color: #fff; border-left: none; padding: 0;">Le Dominant (Rouge)</h3>
+                    <p><em>"On lance maintenant ! On corrigera plus tard."</em></p>
+                    <p style="font-size: 16px; margin-top: 10px; color: #888;">Focus : Vitesse</p>
+                </div>
+                <div class="scenario-card" style="display:flex; align-items:center; justify-content:center; background:none; border:none; border-top:none;">
+                    <i class="fa-solid fa-arrow-right-arrow-left" style="font-size: 40px; color: #fff;"></i>
+                </div>
+                <div class="scenario-card">
+                    <h3 style="color: #ccc; border-left: none; padding: 0;">Le Conforme (Bleu)</h3>
+                    <p><em>"Impossible. Il faut suivre la procédure."</em></p>
+                    <p style="font-size: 16px; margin-top: 10px; color: #888;">Focus : Qualité</p>
+                </div>
+            </div>
+            <p style="margin-top: 30px; padding: 20px; border-top: 1px solid #333;"><strong>Solution :</strong> Le Rouge définit l'objectif de temps, le Bleu définit les critères critiques minimums.</p>
+        </div>
+        <div class="slide-number">11</div>
+    </div>
+
+    <!-- Slide 12: Matrice Equipe -->
+    <div class="slide" id="slide-12">
+        <h2 class="slide-title">La Matrice d'Équipe</h2>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div>
+                    <h3>Pourquoi la diversité ?</h3>
+                    <p>Une équipe composée uniquement de "Créatifs" aura 1000 idées mais ne finira rien. Une équipe de "Gestionnaires" sera organisée mais ratera les innovations.</p>
+                </div>
+                <div>
+                    <h3>L'Équilibre Idéal</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-bolt" style="color: #fff; margin-right: 10px;"></i> <strong>Un Moteur</strong> pour l'action.</li>
+                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-users" style="color: #ddd; margin-right: 10px;"></i> <strong>Un Lien</strong> pour la cohésion.</li>
+                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-magnifying-glass" style="color: #bbb; margin-right: 10px;"></i> <strong>Un Analyste</strong> pour les risques.</li>
+                        <li style="margin-bottom: 15px;"><i class="fa-solid fa-shield-halved" style="color: #999; margin-right: 10px;"></i> <strong>Un Stabilisateur</strong> pour la production.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">12</div>
+    </div>
+
+    <!-- Slide 13: Mise en Application -->
+    <div class="slide" id="slide-13">
+        <h2 class="slide-title">Mise en Application</h2>
+        <div class="content-area">
+            <h3>Atelier : "Mode d'Emploi de Moi-Même"</h3>
+            <p style="margin-bottom: 30px;">Fiche à remplir par l'équipe :</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%;">
+                <div style="background: #111; padding: 20px; border: 1px solid #333; border-radius: 8px;">
+                    <h4 style="margin: 0 0 10px 0; color: #fff; font-family: 'Inter';">Mes forces</h4>
+                    <p style="font-size: 18px; color: #888;">Ce que j'apporte naturellement.</p>
+                </div>
+                <div style="background: #111; padding: 20px; border: 1px solid #333; border-radius: 8px;">
+                    <h4 style="margin: 0 0 10px 0; color: #fff; font-family: 'Inter';">Mes irritants</h4>
+                    <p style="font-size: 18px; color: #888;">Ce qui me stresse chez les autres.</p>
+                </div>
+                <div style="background: #111; padding: 20px; border: 1px solid #333; border-radius: 8px;">
+                    <h4 style="margin: 0 0 10px 0; color: #fff; font-family: 'Inter';">Communication</h4>
+                    <p style="font-size: 18px; color: #888;">Comment me donner du feedback.</p>
+                </div>
+                <div style="background: #111; padding: 20px; border: 1px solid #333; border-radius: 8px;">
+                    <h4 style="margin: 0 0 10px 0; color: #fff; font-family: 'Inter';">Sous Stress</h4>
+                    <p style="font-size: 18px; color: #888;">Comment je réagis sous pression.</p>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">13</div>
+    </div>
+
+     <!-- Slide 14: Conclusion -->
+     <div class="slide" id="slide-14">
+        <h2 class="slide-title">Conclusion & Synthèse</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <p>L'utilisation des tests de personnalité en entreprise dépasse le simple cadre RH. C'est un véritable levier de performance collective.</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 20px;">
+                        <li style="margin-bottom: 20px; border-left: 3px solid #fff; padding-left: 15px;">
+                            <strong>Mieux se connaître</strong> pour mieux agir et maîtriser ses réactions.
+                        </li>
+                        <li style="margin-bottom: 20px; border-left: 3px solid #ddd; padding-left: 15px;">
+                            <strong>Reconnaître l'autre</strong> pour adapter sa communication et éviter les frictions.
+                        </li>
+                        <li style="margin-bottom: 20px; border-left: 3px solid #bbb; padding-left: 15px;">
+                            <strong>Valoriser la diversité</strong> pour couvrir tous les angles morts d'un projet.
+                        </li>
+                    </ul>
+                </div>
+                <div style="background: #111; padding: 30px; border-radius: 12px; border: 1px solid #333; text-align: center;">
+                    <i class="fa-solid fa-quote-left" style="font-size: 30px; color: #555; margin-bottom: 20px;"></i>
+                    <p style="font-size: 24px; font-style: italic; color: #fff;">"Un profil n'est pas une étiquette, mais une grille de lecture pour fluidifier les relations humaines."</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center;">
+                <div style="border: 1px solid #333; padding: 15px; border-radius: 8px; background: #111;">
+                    <h3 style="color: #fff; border:none; padding:0; font-size: 20px;">DISC</h3>
+                </div>
+                <div style="border: 1px solid #333; padding: 15px; border-radius: 8px; background: #111;">
+                    <h3 style="color: #ddd; border:none; padding:0; font-size: 20px;">MBTI</h3>
+                </div>
+                <div style="border: 1px solid #333; padding: 15px; border-radius: 8px; background: #111;">
+                    <h3 style="color: #bbb; border:none; padding:0; font-size: 20px;">Big Five</h3>
+                </div>
+                <div style="border: 1px solid #333; padding: 15px; border-radius: 8px; background: #111;">
+                    <h3 style="color: #999; border:none; padding:0; font-size: 20px;">Ennéagramme</h3>
+                </div>
+            </div>
+        </div>
+        <div class="slide-number">14</div>
+    </div>
+
+    <!-- Slide 15: Thank You -->
+    <div class="slide" id="slide-15">
+        <div class="content-area" style="text-align: center;">
+            <h2 style="font-size: 80px; margin-bottom: 20px; text-transform: uppercase; background: linear-gradient(to right, #ffffff, #666666); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Merci</h2>
+            <p style="font-size: 32px; color: #fff; margin-bottom: 40px;">Avez-vous des questions ?</p>
+        </div>
+        <div class="slide-number">15</div>
+    </div>
+
+</div>
+
+</body>
+</html>
